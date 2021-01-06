@@ -9,13 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectBeer">
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".AccountConnection">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AccountCreation"></activity>
+        <activity android:name=".AddGeneralBeerData"></activity>
+        <activity android:name=".AddPersonalBeerData"></activity>
+        <activity android:name=".BeerDetails"></activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
