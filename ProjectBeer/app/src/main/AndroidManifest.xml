@@ -10,18 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectBeer">
 
-        <activity android:name=".AccountConnection">
+        <activity android:name=".AccountCreation">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AccountCreation"></activity>
+        <activity android:name=".AccountConnection"
+            android:theme="@style/Theme.ProjectBeer"></activity>
         <activity android:name=".AddGeneralBeerData"></activity>
         <activity android:name=".AddPersonalBeerData"></activity>
         <activity android:name=".BeerDetails"></activity>
         <activity android:name=".MainActivity"></activity>
     </application>
+
 
 </manifest>

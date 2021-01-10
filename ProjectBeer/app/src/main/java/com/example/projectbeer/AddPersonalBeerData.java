@@ -8,5 +8,6 @@ public class AddPersonalBeerData extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_personal_beer_data);
+        getSupportActionBar().hide();
     }
 }

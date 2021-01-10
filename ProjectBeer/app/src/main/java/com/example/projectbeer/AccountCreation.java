@@ -1,6 +1,8 @@
 package com.example.projectbeer;
 
+import android.accounts.Account;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class AccountCreation extends AppCompatActivity {
 
     Button creationButton;
-    TextView connectionLink;
+    Button connectionPageButton;
     Context c;
 
     @Override
@@ -22,18 +24,24 @@ public class AccountCreation extends AppCompatActivity {
         setContentView(R.layout.account_creation);
         getSupportActionBar().hide();
 
-        connectionLink = (TextView) findViewById(R.id.accountConnection_link);
+        connectionPageButton = (Button) findViewById(R.id.accountConnection_link);
         creationButton = (Button) findViewById(R.id.create_button);
         c = this;
 
         creationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 if(AccountAlreadyExists())      DisplayErrorMessage("This account already exists");
                 else if(!AccountDataIsValid())  DisplayErrorMessage("Datas are invalid");
                 else                            AddAccountToDataBase("", "", "");
+            }
+        });
+
+        connectionPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent connectionActivity = new Intent(c, AccountConnection.class);
+                startActivity(connectionActivity);
             }
         });
 

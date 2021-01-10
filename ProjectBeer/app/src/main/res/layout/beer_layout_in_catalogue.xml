@@ -3,71 +3,96 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundColor">
 
     <ImageView
-        android:id="@+id/image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:id="@+id/image_rv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="63dp"
         app:srcCompat="@drawable/ic_launcher_background"
         tools:ignore="VectorDrawableCompat"
         tools:layout_editor_absoluteX="18dp"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        android:padding="5dp"
+        />
 
     <RelativeLayout
-        android:layout_toRightOf="@id/image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:paddingLeft="110dp"
+        android:layout_alignTop="@id/image_rv"
+        android:layout_alignBottom="@id/image_rv"
         >
 
-        <TextView
-            android:id="@+id/name"
+        <RelativeLayout
+            android:id="@+id/name_degree_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="37dp"
-            android:layout_marginTop="13dp"
-            android:layout_toRightOf="@id/image"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/beerName_rv"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:gravity="center"
             android:text="Beer name"
-            android:textColor="@color/black"
-            android:textSize="80dp"
-            tools:ignore="NotSibling" />
+            android:textColor="@color/textColor"
+            app:autoSizeTextType="uniform"
+            />
 
-        <TextView
-            android:id="@+id/degree"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="200dp"
-            android:layout_marginRight="200dp"
-            android:text="x°"
-            android:textColor="@color/black"
-            android:textSize="50dp" />
+            <TextView
+                android:id="@+id/degree_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_below="@id/beerName_rv"
+                android:layout_alignLeft="@id/beerName_rv"
+                android:layout_alignRight="@id/beerName_rv"
+                android:text="x°"
+                android:textColor="@color/textColor"
+                android:textStyle="italic"
+                android:textSize="10dp" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_below="@id/degree"
-            android:layout_marginTop="50dp"
-            android:layout_width="wrap_content"
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ratingLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_alignTop="@id/name_degree_layout"
+            android:layout_alignBottom="@id/name_degree_layout"
+            android:layout_toRightOf="@id/name_degree_layout"
+            >
+
+            <RatingBar
+                android:id="@+id/rating_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style = "?android:attr/ratingBarStyleSmall"
+                android:numStars="5"
+                android:rating="2.5"
+                android:layout_centerVertical="true"
+                android:progressTint="@color/light_orange"
+                />
+
+            <ImageButton
+                android:id="@+id/deleteButton"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:backgroundTint="#FF0F00"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        </RelativeLayout>
 
     </RelativeLayout>
-
-
 </RelativeLayout>

@@ -7,4 +7,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green">#04BF55</color>
+
+    <color name="toolBarColor">@color/dark</color>
+    <color name="textColor">#FEFEE2</color>
+    <color name="backgroundColor">@color/dark</color>
+    <color name="buttonBackground">@color/yellow_light</color>
+    <color name="buttonText">@color/brown</color>
+
+    <color name="yellow_light">#F2C366</color>
+    <color name="dark_red">#7E1D17</color>
+    <color name="brown">#472A2E</color>
+    <color name="light_orange">#D78025</color>
+    <color name="dark">#27262A</color>
+    <color name="editText_background">#535353</color>
 </resources>

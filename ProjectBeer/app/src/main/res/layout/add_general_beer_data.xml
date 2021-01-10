@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
+    android:background="@color/backgroundColor"
     >
 
     <RelativeLayout
@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         >
         <TextView
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             android:id="@+id/beerName_txt"
             android:layout_centerHorizontal="true"
             android:textSize="40dp"
@@ -22,7 +22,7 @@
             android:text="Beer name" />
 
         <EditText
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             android:id="@+id/beerName_input"
             android:layout_below="@id/beerName_txt"
             android:layout_centerHorizontal="true"
@@ -32,10 +32,12 @@
             android:ems="10"
             android:textColorHint="#8E8E8E"
             android:inputType="textPersonName"
-            android:hint="Beer name" />
+            android:hint="Beer name"
+            android:background="@color/editText_background"
+            />
 
         <TextView
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             android:id="@+id/beerType_txt"
             android:layout_below="@id/beerName_input"
             android:textSize="40dp"
@@ -46,7 +48,7 @@
             android:text="Beer type" />
 
         <EditText
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             android:id="@+id/beerType_input"
             android:gravity="center"
             android:layout_below="@id/beerType_txt"
@@ -56,10 +58,12 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:textColorHint="#8E8E8E"
-            android:hint="Beer type" />
+            android:hint="Beer type"
+            android:background="@color/editText_background"
+            />
 
         <TextView
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             android:id="@+id/brewery_txt"
             android:layout_below="@id/beerType_input"
             android:layout_centerHorizontal="true"
@@ -70,9 +74,8 @@
             android:text="Brewery" />
 
         <EditText
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             android:id="@+id/brewery_input"
-            android:gravity="center"
             android:layout_below="@id/brewery_txt"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
@@ -80,10 +83,12 @@
             android:ems="10"
             android:textColorHint="#8E8E8E"
             android:inputType="textPersonName"
+            android:gravity="center"
+            android:background="@color/editText_background"
             android:hint="Brewery name" />
 
         <TextView
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             android:id="@+id/degrees_txt"
             android:layout_below="@id/brewery_input"
             android:layout_centerHorizontal="true"
@@ -91,12 +96,12 @@
             android:textSize="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Degrees of alcohol" />
+            android:text="Degrees of alcohol"
+            />
 
         <EditText
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             android:id="@+id/degrees_input"
-            android:gravity="center"
             android:maxLength="4"
             android:layout_below="@id/degrees_txt"
             android:layout_centerHorizontal="true"
@@ -104,10 +109,15 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="numberDecimal"
-            android:hint="Degrees" />
+            android:hint="Degrees"
+            android:gravity="center"
+            android:background="@color/editText_background"
+            />
 
         <Button
             android:id="@+id/next_button"
+            android:textColor="@color/buttonText"
+            android:backgroundTint="@color/buttonBackground"
             android:layout_below="@id/degrees_input"
             android:layout_marginTop="50dp"
             android:layout_centerHorizontal="true"

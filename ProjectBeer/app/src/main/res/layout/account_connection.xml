@@ -3,46 +3,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
+    android:background="@color/backgroundColor"
     tools:context=".AccountConnection">
 
-    <TextView
-        android:textColor="@color/black"
-        android:id="@+id/title"
+    <RelativeLayout
+        android:id="@+id/wrapper_accountConnection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:textSize="25dp"
-        android:text="Sign in to your account:" />
-
+        android:layout_centerInParent="true"
+        >
     <TextView
-        android:textColor="@color/black"
+        android:textColor="@color/textColor"
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="50dp"
+        android:autoSizeMinTextSize="30dp"
+        android:gravity="center"
+        android:text="Sign in:" />
+<RelativeLayout
+    android:id="@+id/infosWrapper"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    >
+    <TextView
+        android:textColor="@color/textColor"
         android:id="@+id/login_txt"
-        android:layout_below="@+id/title"
         android:layout_width="150dp"
         android:layout_height="40dp"
-        android:textSize="20dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="50dp"
+        android:textSize="30dp"
         android:text="Login:" />
 
 
     <EditText
-        android:textColor="@color/black"
+        android:textColor="@color/textColor"
         android:id="@+id/login_input"
         android:layout_width="200dp"
-        android:layout_height="20dp"
-        android:layout_below="@id/title"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@id/login_txt"
         android:layout_alignTop="@id/login_txt"
         android:layout_toRightOf="@id/login_txt"
-        android:backgroundTint="@color/purple_200"
         android:ems="10"
         android:hint="Login"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:gravity="center"
+        android:background="@color/editText_background"
+         />
 
     <TextView
-        android:textColor="@color/black"
+        android:textColor="@color/textColor"
         android:id="@+id/password_txt"
         android:layout_below="@+id/login_txt"
         android:layout_alignLeft="@id/login_txt"
@@ -50,10 +62,10 @@
         android:layout_width="150dp"
         android:layout_height="40dp"
         android:textSize="30dp"
-        android:text="Password" />
+        android:text="Password:" />
 
     <EditText
-        android:textColor="@color/black"
+        android:textColor="@color/textColor"
         android:id="@+id/password_input"
         android:layout_below="@id/login_input"
         android:layout_toRightOf="@id/password_txt"
@@ -63,15 +75,21 @@
         android:ems="10"
         android:inputType="textPassword"
         android:hint="Password"
+        android:gravity="center"
+        android:background="@color/editText_background"
         />
+</RelativeLayout>
 
     <Button
         android:id="@+id/connection_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/password_txt"
-        android:layout_marginTop="40dp"
-        android:text="Connection" />
+        android:layout_below="@id/infosWrapper"
+        android:backgroundTint="@color/buttonBackground"
+        android:textColor="@color/buttonText"
+        android:text="Login" />
+    </RelativeLayout>
 
 </RelativeLayout>

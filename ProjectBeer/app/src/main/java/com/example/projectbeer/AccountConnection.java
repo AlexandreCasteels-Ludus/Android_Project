@@ -22,6 +22,7 @@ public class AccountConnection extends AppCompatActivity {
         setContentView(R.layout.account_connection);
         connection_btn = (Button) findViewById(R.id.connection_button);
         c = this;
+        getSupportActionBar().hide();
 
         Intent catalogueIntent = new Intent(this, MainActivity.class);
 
