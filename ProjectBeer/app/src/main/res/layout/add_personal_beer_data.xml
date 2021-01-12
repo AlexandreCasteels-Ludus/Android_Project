@@ -29,36 +29,35 @@
             android:text="Edit image" />
 
         <ImageView
-            android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/image_apbd"
             android:layout_below="@id/editImg_button"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
-            android:background="@drawable/ic_launcher_background" />
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/ic_launcher_background" />
 
         <TextView
             android:textColor="@color/textColor"
             android:layout_marginTop="20dp"
             android:id="@+id/date_txt"
-            android:layout_below="@id/image"
+            android:layout_below="@id/image_apbd"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="The day you drank that beer:" />
+            android:text="The day you drank it:" />
 
-        <EditText
-            android:textColor="@color/textColor"
+        <DatePicker
             android:layout_marginTop="10dp"
             android:id="@+id/date_input"
             android:layout_centerInParent="true"
             android:layout_below="@id/date_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:gravity="center"
             android:background="@color/editText_background"
-            android:inputType="datetime" />
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false" />
 
         <TextView
             android:textColor="@color/textColor"
@@ -76,14 +75,14 @@
             android:id="@+id/commentary_input"
             android:layout_below="@id/commentary_txt"
             android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textLongMessage"
+            android:layout_alignLeft="@id/date_input"
+            android:layout_alignRight="@id/date_input"
+            android:layout_height="100dp"
             android:hint="Your commentary..."
+            android:inputType="textMultiLine"
             android:gravity="center"
             android:background="@color/editText_background"
-            />
+            android:layout_width="0dp" />
 
         <TextView
             android:textColor="@color/textColor"
@@ -105,35 +104,23 @@
             android:progressTint="@color/light_orange"
             />
 
-        <CheckBox
-            android:textColor="@color/textColor"
-            android:layout_marginTop="20dp"
-            android:id="@+id/checkBox"
-            android:layout_below="@id/rating_input"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="just tasted" />
-
         <TextView
             android:textColor="@color/textColor"
             android:layout_marginTop="20dp"
             android:id="@+id/container_txt"
-            android:layout_below="@id/checkBox"
+            android:layout_below="@id/rating_input"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Container type:" />
+            android:text="Drunk from:" />
 
         <Spinner
-            android:textColor="@color/textColor"
             android:id="@+id/spinner"
             android:layout_below="@id/container_txt"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/editText_background"
+            android:backgroundTint="@color/white"
             />
 
         <TextView
@@ -156,31 +143,57 @@
             android:ems="10"
             android:inputType="numberDecimal"
             android:maxLength="5"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:hint="Volume..."
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:hint="_"
+            android:textSize="20dp"
             android:gravity="center"
             android:background="@color/editText_background"
             />
 
         <TextView
-            android:textColor="@color/textColor"
-            android:layout_marginTop="20dp"
             android:id="@+id/localisation_txt"
+            android:textColor="@color/textColor"
             android:layout_below="@id/containerVolume_input"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Localisation:" />
+            android:text="Where you drank it:"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="20dp"
+            />
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/map"
-            android:backgroundTint="#FF0000"
-            android:layout_marginTop="10dp"
-            android:layout_centerInParent="true"
+        <Button
+            android:id="@+id/editLocation"
             android:layout_below="@id/localisation_txt"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="@color/buttonBackground"
+            android:textColor="@color/buttonText"
+            android:text="Edit localisation"
+            />
+
+        <fragment
+            android:id="@+id/mapView"
+            android:layout_below="@id/editLocation"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="50dp"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+
+        <Button
+            android:id="@+id/recordDataButton"
+            android:layout_below="@id/mapView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green"
+            android:textColor="@color/buttonText"
+            android:text="Record beer's information"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </ScrollView>
 

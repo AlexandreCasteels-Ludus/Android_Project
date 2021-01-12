@@ -15,9 +15,10 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton addButton;
     RecyclerView recyclerView;
 
+    //Variables affichées dans le Recycler View
     String beerName[] = {"66fdsqfdsqfdsqfd54q6f5d4q6f54d6qfhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh6", "2", "3", "4", "5","66fdsqfdsqfdsqfd54q6f5d4q6f54d6qfhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh6", "2", "3", "4", "5"};
     int images[] = {R.drawable.img_20180309_091856, R.drawable.img_20180428_123844, R.drawable.img_20180428_123852, R.drawable.img_20180507_172843, R.drawable.img_20180507_175301,R.drawable.img_20180309_091856, R.drawable.img_20180428_123844, R.drawable.img_20180428_123852, R.drawable.img_20180507_172843, R.drawable.img_20180507_175301};
-    float rating[] = {3.5f,2,3,4,5,3.5f,2,3,4,5}, degrees[] = {1.1f,2.2f,3.5f,4.9f,5.2f,1.1f,2.2f,3.5f,4.9f,5.2f};
+    float rating[] = {3.5f,2,3,4,5,3.5f,2,3,4,5}, degrees[] = {1.1f,2,3.5f,4.9f,5.2f,1,2.2f,3.5f,4,5.2f};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,11 +33,18 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Intent addBeerActivity = new Intent(this, AddGeneralBeerData.class);
+/*      recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { startActivity(addBeerActivity); }
+            public void onClick(View v) {
+                Intent addBeerActivity = new Intent(getApplicationContext(), AddGeneralBeerData.class);
+                startActivity(addBeerActivity);
+            }
         });
     }
 }

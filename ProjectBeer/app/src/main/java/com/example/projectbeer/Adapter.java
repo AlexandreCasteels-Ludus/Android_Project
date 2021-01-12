@@ -2,6 +2,8 @@ package com.example.projectbeer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +12,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
@@ -22,7 +28,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     float ratings[],  degrees[];;
     String beerNames[];
 
-    ImageButton deleteButton;
+    ImageButton deleteButton, modifyButton;
 
     public Adapter(Context a_c, int a_images[], String a_beerNames[], float a_degrees[], float a_ratings[]){
         c = a_c;
@@ -50,14 +56,27 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.image.setImageResource(images[position]);
+        //Les images que j'ai chargées en local ralentissent le RecyclerView. Faudra voir si on a le même problème quand on chargera les images depuis la BDD
+        //holder.image.setImageResource(images[position]);
+
         holder.tv_beerName.setText(beerNames[position]);
         holder.tv_degree.setText(String.valueOf(degrees[position]) + "°");
         holder.rating.setRating(ratings[position]);
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { DeleteBeer(); }
+        });
+
+        modifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { ModifyBeer(); }
+        });
     }
 
     @Override
     public int getItemCount() {
+        Log.i("getitem", "test");
         return images.length;
     }
 
@@ -73,13 +92,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             tv_degree = itemView.findViewById(R.id.degree_rv);
             rating = itemView.findViewById(R.id.rating_rv);
             deleteButton = itemView.findViewById(R.id.deleteButton);
-
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DeleteBeer();
-                }
-            });
+            modifyButton = itemView.findViewById(R.id.modifyButton);
         }
     }
 
@@ -88,7 +101,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         c.startActivity(beerDetailsActivity);
     }
 
+    void ModifyBeer(){
+        Intent modifyActivity = new Intent(c, AddGeneralBeerData.class);
+        c.startActivity(modifyActivity);
+    }
+
     void DeleteBeer(){
         //Supprime bière de la bdd personnelle seulement
+        Toast.makeText(c, "Beer deleted", Toast.LENGTH_SHORT).show();
     }
 }
