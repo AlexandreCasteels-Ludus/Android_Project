@@ -17,8 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Variables affichées dans le Recycler View
     String beerName[] = {"66fdsqfdsqfdsqfd54q6f5d4q6f54d6qfhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh6", "2", "3", "4", "5","66fdsqfdsqfdsqfd54q6f5d4q6f54d6qfhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh6", "2", "3", "4", "5"};
-    //int images[] = {R.drawable.img_20180309_091856, R.drawable.img_20180428_123844, R.drawable.img_20180507_172843, R.drawable.img_20180507_175301,R.drawable.img_20180309_091856, R.drawable.img_20180428_123844, R.drawable.img_20180507_172843, R.drawable.img_20180507_175301};
-    int images[] = null;
+    int images[] = {R.drawable.img_20180309_091856, R.drawable.img_20180428_123844, R.drawable.img_20180428_123852, R.drawable.img_20180507_172843, R.drawable.img_20180507_175301,R.drawable.img_20180309_091856, R.drawable.img_20180428_123844, R.drawable.img_20180428_123852, R.drawable.img_20180507_172843, R.drawable.img_20180507_175301};
     float rating[] = {3.5f,2,3,4,5,3.5f,2,3,4,5}, degrees[] = {1.1f,2,3.5f,4.9f,5.2f,1,2.2f,3.5f,4,5.2f};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
