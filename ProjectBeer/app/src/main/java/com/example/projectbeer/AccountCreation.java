@@ -15,12 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 
+
 public class AccountCreation extends AppCompatActivity {
+
+    final int MIN_CHAR_INPUT = 4;
 
     Button creationButton;
     Button connectionPageButton;
@@ -28,10 +30,11 @@ public class AccountCreation extends AppCompatActivity {
 
     EditText login_input, password_input, email_input;
 
-    boolean b_accountAlreadyExists = false;
+    boolean b_accountWellCreated = false;
+    boolean taskIsEnded = false;
 
-    String NAMESPACE = "http://192.168.1.5:9999/";
-    String NAME_WEBSERVICE = "beerAppServiceWeb/";
+    String NAMESPACE = "http://beerapp.atwebpages.com/";
+    String NAME_WEBSERVICE = "webService/";
     String SOAP_ACTION = NAMESPACE + NAME_WEBSERVICE;
     String URL= NAMESPACE + NAME_WEBSERVICE + "service.php?wsdl";
 
@@ -51,14 +54,15 @@ public class AccountCreation extends AppCompatActivity {
         creationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(AccountAlreadyExists())      DisplayErrorMessage("This account already exists");
-                else if(!AccountDataIsValid())  DisplayErrorMessage("Datas are invalid");
-                else
-                    AddAccountToDataBase(
+                if(!AccountDataIsValid())
+                    DisplayErrorMessage("Datas are invalid");
+                else if(AccountAlreadyExists())
+                    DisplayErrorMessage("This account already exists");
+                else if(AddAccountToDataBase(
                         login_input.getText().toString(),
                         password_input.getText().toString(),
-                        email_input.getText().toString()
-                    );
+                        email_input.getText().toString()))
+                    DisplayErrorMessage("Account created");
             }
         });
 
@@ -82,42 +86,70 @@ public class AccountCreation extends AppCompatActivity {
     }
 
     boolean AccountDataIsValid(){
-        boolean b_dataIsValid = false;
-
+         return true;
         //Vérification si les données entrées par l'utilisateur sont conformes à ce qui est attendu (si le mail est cohérent par exemple)
-
-        return b_dataIsValid;
+        /*
+        return login_input.getText().toString().length() > MIN_CHAR_INPUT &&
+                 password_input.getText().toString().length() > MIN_CHAR_INPUT &&
+                 email_input.getText().toString().length() > MIN_CHAR_INPUT &&
+                 email_input.getText().toString().contains("@") &&
+                 email_input.getText().toString().contains(".");*/
     }
 
     boolean AccountAlreadyExists(){
 
-        new SignIn().execute(login_input.getText().toString(), password_input.getText().toString());
         //Vérification dans la BDD si un compte avec le même username ou le même mail existe
 
-        return b_accountAlreadyExists;
+        SignIn signIn = (SignIn) new SignIn().execute(login_input.getText().toString(), password_input.getText().toString());
+
+        signIn.taskIsEnded = false;
+        while(! signIn.taskIsEnded) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return signIn.b_accountAlreadyExists;
     }
 
-    void AddAccountToDataBase(String a_username, String a_password, String a_mail){
+    boolean AddAccountToDataBase(String a_username, String a_password, String a_mail){
         //Ajout du compte dans la BDD
+
+        new Registration().execute(a_username, a_password, a_mail);
+
+        taskIsEnded = false;
+        while(! taskIsEnded) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return b_accountWellCreated;
     }
 
 
-    class SignIn extends AsyncTask<String, Void, String> {
+    class Registration extends AsyncTask<String, Void, String> {
 
-        String METHOD_NAME = "SignIn";
+        String METHOD_NAME = "Registration";
         String PARAMS_1_login = "login";
         String PARAMS_2_password = "password";
+        String PARAMS_3_email = "mail";
 
         boolean result = false;
+
         @Override
         protected void onPostExecute(String s) {
-            b_accountAlreadyExists = result;
+            b_accountWellCreated = result;
         }
 
         @Override
         protected String doInBackground(String... params) {
 
-            SoapObject soapObject = new SoapObject(NAMESPACE, "SignIn");
+            SoapObject soapObject = new SoapObject(NAMESPACE, METHOD_NAME);
 
             PropertyInfo propertyInfo1 = new PropertyInfo();
 
@@ -133,9 +165,9 @@ public class AccountCreation extends AppCompatActivity {
             soapObject.addProperty(propertyInfo2);
 
             PropertyInfo propertyInfo3 = new PropertyInfo();
-            propertyInfo3.setName("getId");
-            propertyInfo3.setValue(false);
-            propertyInfo3.setType(Boolean.class);
+            propertyInfo3.setName(PARAMS_3_email);
+            propertyInfo3.setValue(params[2]);
+            propertyInfo3.setType(String.class);
             soapObject.addProperty(propertyInfo3);
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -145,16 +177,13 @@ public class AccountCreation extends AppCompatActivity {
 
             try {
                 httpTransportSE.call(SOAP_ACTION + METHOD_NAME, envelope);
-                SoapPrimitive soapPrimitive = (SoapPrimitive) envelope.getResponse();
-                result = (boolean)soapPrimitive.getValue();
-            }
-            catch(Exception e) {
+                result = (boolean) envelope.getResponse();
+            } catch (Exception e) {
                 Log.i("debug", e.getMessage());
             }
 
-            // return result;
+            taskIsEnded = true;
             return "end";
         }
     }
-
 }
