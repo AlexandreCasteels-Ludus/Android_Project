@@ -52,11 +52,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    //public interface Listener{ void onClickDeleteButton(int position); }
+    public interface Listener{ void onClickDeleteButton(int position); }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //Les images que j'ai chargées en local ralentissent le RecyclerView. Faudra voir si on a le même problème quand on chargera les images depuis la BDD
         //holder.image.setImageResource(images[position]);
 
         holder.tv_beerName.setText(beerNames[position]);
@@ -74,12 +73,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         });
     }
 
-    @Override
-    public int getItemCount() {
-        Log.i("getitem", "test");
-        return images.length;
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView image;
         TextView tv_beerName, tv_degree;
@@ -95,6 +88,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             modifyButton = itemView.findViewById(R.id.modifyButton);
         }
     }
+
+    @Override
+    public int getItemCount() { return beerNames.length; }
 
     void OpenBeerDetails(){
         Intent beerDetailsActivity = new Intent(c, BeerDetails.class);

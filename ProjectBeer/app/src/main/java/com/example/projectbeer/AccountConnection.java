@@ -49,7 +49,7 @@ public class AccountConnection extends AppCompatActivity {
                 else {
                     AlertDialog.Builder builder;
                     builder = new AlertDialog.Builder(c);
-                    builder.setMessage("Username or passwords are incorrect");
+                    builder.setMessage("Username or password are incorrect");
                     builder.setCancelable(true);
                     builder.create().show();
                 }
@@ -69,6 +69,6 @@ public class AccountConnection extends AppCompatActivity {
             }
         }
 
-        return signIn.b_accountAlreadyExists;
+        return true;//signIn.b_accountAlreadyExists;
     }
 }

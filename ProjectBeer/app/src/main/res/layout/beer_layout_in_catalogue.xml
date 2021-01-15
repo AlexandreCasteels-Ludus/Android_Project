@@ -94,7 +94,7 @@
                 android:layout_width="30dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:backgroundTint="#FF0F00"
+                android:backgroundTint="@color/dark_red"
                 app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
         </RelativeLayout>
 
