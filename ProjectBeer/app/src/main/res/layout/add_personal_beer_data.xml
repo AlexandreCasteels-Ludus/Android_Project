@@ -57,6 +57,7 @@
             android:gravity="center"
             android:background="@color/editText_background"
             android:datePickerMode="spinner"
+            android:maxDate=""
             android:calendarViewShown="false" />
 
         <TextView

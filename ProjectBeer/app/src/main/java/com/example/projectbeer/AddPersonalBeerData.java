@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -18,7 +20,10 @@ import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,8 +39,15 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -44,17 +56,37 @@ public class AddPersonalBeerData extends AppCompatActivity {
     public static final int  CAMERA_PERM_CODE     = 101;
     public static final int  CAMERA_REQUEST_CODE  = 102;
     public static final int  GALLERY_REQUEST_CODE = 105;
-    Spinner spinner;
-    String[] spinnerChoices = {"Bottle", "Barrel", "Can"};
+
+    String[] spinnerChoices = {"Barrel", "Bottle", "Can"};
     Button localisation_button, recordDataButton, editImage;
-    ImageView imageView;
 
     String currentPhotoPath;
+
+    Beer beer;
+    float volume;
+
+    //Entrées utilisateur
+    ImageView imageView;
+    DatePicker datePicker;
+    EditText commentary;
+    RatingBar ratingBar;
+    Spinner spinner;
+    EditText container_volume;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_personal_beer_data);
         getSupportActionBar().hide();
+
+        Log.i("alldata", "ok - 1");
+
+
+        datePicker = (DatePicker) findViewById(R.id.date_input);
+        datePicker.setMaxDate(new Date().getTime());
+        commentary = (EditText) findViewById(R.id.commentary_input);
+        ratingBar = (RatingBar) findViewById(R.id.rating_input);
+        container_volume = (EditText) findViewById(R.id.containerVolume_input);
 
         //Création du menu déroulant (spinner)
         spinner = findViewById(R.id.spinner);
@@ -69,7 +101,9 @@ public class AddPersonalBeerData extends AppCompatActivity {
         recordDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(DataIsValid()) RecordData(); }
+                volume = Float.valueOf(container_volume.getText().toString());
+                if(DataIsValid(volume)) RecordData();
+            }
         });
 
         //Bouton d'ajout d'image
@@ -92,33 +126,227 @@ public class AddPersonalBeerData extends AppCompatActivity {
                 startActivity(locationPicherActivity);
             }
         });
+
+        //Récupération des infos de l'activity précédente
+        beer = (Beer) getIntent().getSerializableExtra("Beer");
     }
 
-    boolean DataIsValid(){
-        boolean dataIsValid = false;
+    boolean DataIsValid(float volume){
+        boolean dataIsValid = true;
+
+        if(volume <= 0) dataIsValid = false;
 
         if(dataIsValid){
             Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(mainActivity);
         } else{
-            Toast.makeText(getApplication(),"Information invalid", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(getApplication(),"The volume must be greater than 0", Toast.LENGTH_SHORT).show();
         }
 
         return dataIsValid;
     }
 
     void RecordData(){
-        //Si la bière existe déjà dans la bdd personnelle alors on modifie ses informations, sinon on les ajoute aux bdd générale et personnelle
-        boolean existsInPersonalDB = false;
+        //Si la bière existe déjà dans la bdd générale alors on modifie ses informations, sinon on les ajoute aux bdd générale et personnelle
+        boolean existsInGeneralDB = false;
 
-        if(existsInPersonalDB){
+      //  Log.i("alldata", String.valueOf(ratingBar.getRating()));
+
+        int container = (int) spinner.getSelectedItemId();
+        LatLng consumptionPlace = new LatLng(0,0);
+        String comment = commentary.getText().toString();
+        float rating = ratingBar.getRating();
+        Date date = new Date(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+        Image image;
+
+        Beer newBeerData = new Beer(container, volume, consumptionPlace, comment, rating, null , date);
+
+        beer.container = newBeerData.container;
+        beer.volume = newBeerData.volume;
+        beer.consumption_place = newBeerData.consumption_place;
+        beer.comment = newBeerData.comment;
+        beer.rating = newBeerData.rating;
+        beer.image = newBeerData.image;
+        beer.date = newBeerData.date;
+
+        Log.i("alldata", beer.name + " " + beer.type + " " + beer.brewery + " " + String.valueOf(beer.percent) + " " + beer.comment+ " " + String.valueOf(beer.consumption_place) + " " + beer.container + " " + String.valueOf(beer.rating) + " " + String.valueOf(beer.date));
+
+        new AddBeer().execute(beer.name, beer.type,beer.brewery, String.valueOf(beer.percent), String.valueOf(beer.container), String.valueOf(beer.volume),
+                String.valueOf(beer.consumption_place), beer.comment, String.valueOf(beer.rating), beer.image, String.valueOf(beer.date), "2");
+
+        if(existsInGeneralDB){
 
         } else{
 
         }
+
     }
 
+    String NAMESPACE = "http://beerapp.atwebpages.com/";
+    String NAME_WEBSERVICE = "webService/";
+    String SOAP_ACTION = NAMESPACE + NAME_WEBSERVICE;
+    String URL= NAMESPACE + NAME_WEBSERVICE + "service.php?wsdl";
+
+    boolean b_beerWellCreated;
+    boolean taskIsDone;
+
+    class AddBeer extends AsyncTask<String, Void, String> {
+
+        String METHOD_NAME = "AddBeer";
+
+        //beer
+        String PARAMS_1_name = "name";
+        String PARAMS_2_type = "type";
+        String PARAMS_3_brewery = "brewery";
+        String PARAMS_4_percent = "percentAlcohol";
+        String PARAMS_5_container = "container";        //!=type
+        String PARAMS_6_volume = "volume";              //!=type
+
+        //catalog
+        String PARAMS_7_localisation = "localisation";  //!=type
+        String PARAMS_8_comment = "comment";
+        String PARAMS_9_score = "score";                //!=type
+        String PARAMS_10_photo = "photo";               //!=type
+        String PARAMS_11_date = "date";
+
+        String PARAMS_12_user = "fk_user";
+        String PARAMS_13_beer = "fk_beer";
+
+
+        boolean result = false;
+
+        @Override
+        protected void onPostExecute(String s) {
+            b_beerWellCreated = result;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            SoapObject soapObject = new SoapObject(NAMESPACE, METHOD_NAME);
+
+            //Nom bière
+            PropertyInfo propertyInfo1 = new PropertyInfo();
+            propertyInfo1.setName(PARAMS_1_name);
+            propertyInfo1.setValue(params[0]);
+            propertyInfo1.setType(String.class);
+            soapObject.addProperty(propertyInfo1);
+
+            //Type bière
+            PropertyInfo propertyInfo2 = new PropertyInfo();
+            propertyInfo2.setName(PARAMS_2_type);
+            propertyInfo2.setValue(params[1]);
+            propertyInfo2.setType(String.class);
+            soapObject.addProperty(propertyInfo2);
+
+            //Nom brasserie
+            PropertyInfo propertyInfo3 = new PropertyInfo();
+            propertyInfo3.setName(PARAMS_3_brewery);
+            propertyInfo3.setValue(params[2]);
+            propertyInfo3.setType(String.class);
+            soapObject.addProperty(propertyInfo3);
+
+            //Pourcentage d'alcool
+            PropertyInfo propertyInfo4 = new PropertyInfo();
+            propertyInfo4.setName(PARAMS_4_percent);
+            propertyInfo4.setValue(params[3]);
+            propertyInfo4.setType(float.class);
+            soapObject.addProperty(propertyInfo4);
+
+            //Type de contenant
+            PropertyInfo propertyInfo5 = new PropertyInfo();
+            propertyInfo5.setName(PARAMS_5_container);
+            propertyInfo5.setValue(params[4]);
+            propertyInfo5.setType(int.class);
+            soapObject.addProperty(propertyInfo5);
+
+            //Volume du contenant
+            PropertyInfo propertyInfo6 = new PropertyInfo();
+            propertyInfo6.setName(PARAMS_6_volume);
+            propertyInfo6.setValue(params[5]);
+            propertyInfo6.setType(float.class);
+            soapObject.addProperty(propertyInfo6);
+
+/*            String PARAMS_7_localisation = "localisation";
+            String PARAMS_8_comment = "comment";
+            String PARAMS_9_score = "score";
+            String PARAMS_10_photo = "photo";
+            String PARAMS_11_date = "date";
+
+            String PARAMS_12_user = "fk_user";
+            String PARAMS_13_beer = "fk_beer";*/
+
+            //Localisation
+            PropertyInfo propertyInfo7 = new PropertyInfo();
+            propertyInfo7.setName(PARAMS_7_localisation);
+            propertyInfo7.setValue(params[6]);
+            propertyInfo7.setType(LatLng.class);
+            soapObject.addProperty(propertyInfo7);
+
+            //Commentaire
+            PropertyInfo propertyInfo8 = new PropertyInfo();
+            propertyInfo8.setName(PARAMS_8_comment);
+            propertyInfo8.setValue(params[7]);
+            propertyInfo8.setType(String.class);
+            soapObject.addProperty(propertyInfo8);
+
+            //Note
+            PropertyInfo propertyInfo9 = new PropertyInfo();
+            propertyInfo9.setName(PARAMS_9_score);
+            propertyInfo9.setValue(params[8]);
+            propertyInfo9.setType(float.class);
+            soapObject.addProperty(propertyInfo9);
+
+            //Photo
+            PropertyInfo propertyInfo10 = new PropertyInfo();
+            propertyInfo10.setName(PARAMS_10_photo);
+            propertyInfo10.setValue(params[9]);
+            propertyInfo10.setType(String.class);
+            soapObject.addProperty(propertyInfo10);
+
+            //Date
+            PropertyInfo propertyInfo11 = new PropertyInfo();
+            propertyInfo11.setName(PARAMS_11_date);
+            propertyInfo11.setValue(params[10]);
+            propertyInfo11.setType(Date.class);
+            soapObject.addProperty(propertyInfo11);
+
+            //#Utilisateur lié
+            PropertyInfo propertyInfo12 = new PropertyInfo();
+            propertyInfo12.setName(PARAMS_12_user);
+            propertyInfo12.setValue(params[11]);
+            propertyInfo12.setType(String.class);
+            soapObject.addProperty(propertyInfo12);
+
+/*            //#Bière liée
+            PropertyInfo propertyInfo13 = new PropertyInfo();
+            propertyInfo13.setName(PARAMS_13_beer);
+            propertyInfo13.setValue(*//*params[12]*//*2);
+            propertyInfo13.setType(int.class);
+            soapObject.addProperty(propertyInfo13);*/
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.setOutputSoapObject(soapObject);
+
+            HttpTransportSE httpTransportSE = new HttpTransportSE(URL);
+
+            try {
+                httpTransportSE.call(SOAP_ACTION + METHOD_NAME, envelope);
+                //result = (boolean) envelope.getResponse();
+                Log.i("wxcv", String.valueOf(envelope.getResponse()));
+
+            } catch (Exception e) {
+                Log.i("wxcv", e.getMessage().toString());
+            }
+
+            taskIsDone = true;
+            return "end";
+        }
+    }
+
+
+
+    //Ci-dessous fonctions pour l'édition de l'image
     void DisplayChoices(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Take a picture or choose image from gallery?");
