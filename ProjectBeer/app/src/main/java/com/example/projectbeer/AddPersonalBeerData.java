@@ -65,6 +65,8 @@ public class AddPersonalBeerData extends AppCompatActivity {
     Beer beer;
     float volume;
 
+    boolean dataIsValid = true;
+
     //Entrées utilisateur
     ImageView imageView;
     DatePicker datePicker;
@@ -101,8 +103,11 @@ public class AddPersonalBeerData extends AppCompatActivity {
         recordDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                volume = Float.valueOf(container_volume.getText().toString());
-                if(DataIsValid(volume)) RecordData();
+                dataIsValid = true;
+
+                if(container_volume.getText().toString().matches("")) volume = 0;
+
+                RecordData();
             }
         });
 
@@ -131,22 +136,9 @@ public class AddPersonalBeerData extends AppCompatActivity {
         beer = (Beer) getIntent().getSerializableExtra("Beer");
     }
 
-    boolean DataIsValid(float volume){
-        boolean dataIsValid = true;
-
-        if(volume <= 0) dataIsValid = false;
-
-        if(dataIsValid){
-            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(mainActivity);
-        } else{
-            Toast.makeText(getApplication(),"The volume must be greater than 0", Toast.LENGTH_SHORT).show();
-        }
-
-        return dataIsValid;
-    }
-
     void RecordData(){
+        Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(mainActivity);
         //Si la bière existe déjà dans la bdd générale alors on modifie ses informations, sinon on les ajoute aux bdd générale et personnelle
         boolean existsInGeneralDB = false;
 

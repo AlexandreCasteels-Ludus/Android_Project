@@ -20,6 +20,8 @@ public class AddGeneralBeerData extends AppCompatActivity {
     EditText brewery_input;
     EditText alcohol_input;
 
+    boolean b_allFieldsAreCompleted = true;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_general_beer_data);
@@ -48,10 +50,17 @@ public class AddGeneralBeerData extends AppCompatActivity {
         next_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                b_allFieldsAreCompleted = true;
+
                 String name = beerName_input.getText().toString();
                 String type = type_input.getText().toString();
                 String brewery = brewery_input.getText().toString();
-                float percent = Float.valueOf(alcohol_input.getText().toString());
+
+                float percent = 0f;
+
+                if((alcohol_input.getText().toString().matches("")))
+                    b_allFieldsAreCompleted = false;
+                else percent = Float.valueOf(alcohol_input.getText().toString());
 
                // Log.i("biere", name + " " + type + " " + brewery + " " + String.valueOf(percent));
 
@@ -64,7 +73,7 @@ public class AddGeneralBeerData extends AppCompatActivity {
                 }
                 else
                 {
-                    DisplayErrorMessage("Some fields are not completed...");
+                    DisplayErrorMessage("Name or degrees of alcohol fields are not completed");
                 }
             }
         });
@@ -79,9 +88,8 @@ public class AddGeneralBeerData extends AppCompatActivity {
     }
 
     boolean DataIsValid(String a_name, String a_type, String a_brewery, float a_percent){
-        boolean b_allFieldsAreCompleted = true;
 
-        if(a_name == "" || a_percent > 100) b_allFieldsAreCompleted = false;
+        if(a_name.matches("") || a_percent > 100) b_allFieldsAreCompleted = false;
 
         //On vérifie si tous les champs sont complétés
 

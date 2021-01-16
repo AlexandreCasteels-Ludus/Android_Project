@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/backgroundColor"
     >
 
@@ -109,7 +108,7 @@
             android:layout_height="50dp"
             android:ems="10"
             android:inputType="numberDecimal"
-            android:hint="Degrees in cl"
+            android:hint="Degrees of alcohol"
             android:maxLength="5"
             android:gravity="center"
             android:background="@color/editText_background"
