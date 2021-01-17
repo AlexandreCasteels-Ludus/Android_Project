@@ -25,16 +25,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     String beerNames[];
     int idCatalogs[];
 
+    int idUser;
+
     ImageButton deleteButton, modifyButton;
 
 
-    public Adapter(Context a_c, int a_images[], String a_beerNames[], float a_degrees[], float a_ratings[], int idCatalogs[]){
+    public Adapter(Context a_c, int a_images[], String a_beerNames[], float a_degrees[], float a_ratings[], int idCatalogs[], int idUser){
         c = a_c;
         images = a_images;
         degrees = a_degrees;
         ratings = a_ratings;
         beerNames = a_beerNames;
         this.idCatalogs = idCatalogs;
+        this.idUser = idUser;
     }
 
     @NonNull
@@ -42,6 +45,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(c);
         View view = inflater.inflate(R.layout.beer_layout_in_catalogue, parent, false);
+
 
         return new ViewHolder(view);
     }
@@ -104,6 +108,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     void ModifyBeer(int position){
         Intent modifyActivity = new Intent(c, AddPersonalBeerData.class);
         modifyActivity.putExtra("idCatalog", idCatalogs[position]);
+        modifyActivity.putExtra("idUser", idUser);
         c.startActivity(modifyActivity);
     }
 

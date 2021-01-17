@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         addButton = findViewById(R.id.addButton);
         recyclerView = findViewById(R.id.recyclerView);
 
-        idUser = getIntent().getIntExtra("idUser", 2);
+        idUser = getIntent().getIntExtra("idUser", -1);
 
         if(idUser != -1){
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-            Adapter adapter = new Adapter(this, null, beerName, degrees, rating, idCatalogs);
+            Adapter adapter = new Adapter(this, null, beerName, degrees, rating, idCatalogs, idUser);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -97,19 +97,21 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
 
-
-            addButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent addBeerActivity = new Intent(getApplicationContext(), AddGeneralBeerData.class);
-                    addBeerActivity.putExtra("idCatalog", -1); // specify a new Catalog line
-                    startActivity(addBeerActivity);
-                }
-            });
         }
         else{
 
         }
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("allo", "allo");
+                Intent addBeerActivity = new Intent(getApplicationContext(), AddGeneralBeerData.class);
+                addBeerActivity.putExtra("idCatalog", -1); // specify a new Catalog line
+                addBeerActivity.putExtra("idUser", idUser);
+                startActivity(addBeerActivity);
+            }
+        });
     }
 
     class GetAllCatalogOfUser extends AsyncTask<String, Void, String> {

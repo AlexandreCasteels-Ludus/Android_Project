@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
@@ -124,7 +125,7 @@ public class AccountConnection extends AppCompatActivity {
 
             try {
                 httpTransportSE.call(SOAP_ACTION + METHOD_NAME, envelope);
-                result = (int) envelope.getResponse();
+                result = Integer.parseInt(String.valueOf((SoapPrimitive) envelope.getResponse()));
             } catch (Exception e) {
                 Log.i("debug", e.getMessage());
             }

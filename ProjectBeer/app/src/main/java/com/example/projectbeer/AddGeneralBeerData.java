@@ -68,6 +68,7 @@ public class AddGeneralBeerData extends AppCompatActivity {
                     Beer beer = new Beer(name, type, brewery, percent);
 
                     addPersonalData_activity.putExtra("Beer", beer);
+                    addPersonalData_activity.putExtra("idUser", getIntent().getIntExtra("idUser", -1));
                     startActivity(addPersonalData_activity);
                     startActivity(addPersonalData_activity);
                 }

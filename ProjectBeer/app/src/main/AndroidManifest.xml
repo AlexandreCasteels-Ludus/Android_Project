@@ -36,7 +36,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".AccountCreation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,7 +47,7 @@
             android:name=".BeerDetails"
             android:theme="@style/Theme.ProjectBeer" />
         <activity android:name=".AddGeneralBeerData" />
-        <activity android:name=".AccountCreation" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".AccountConnection" />
         <activity android:name=".AddPersonalBeerData" />
 
