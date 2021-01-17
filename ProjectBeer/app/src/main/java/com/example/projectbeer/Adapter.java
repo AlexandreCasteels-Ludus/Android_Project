@@ -2,12 +2,11 @@ package com.example.projectbeer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -17,9 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.IOException;
-import java.net.URL;
-
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     Context c;
@@ -27,15 +23,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     int images[];
     float ratings[],  degrees[];;
     String beerNames[];
+    int idCatalogs[];
 
     ImageButton deleteButton, modifyButton;
 
-    public Adapter(Context a_c, int a_images[], String a_beerNames[], float a_degrees[], float a_ratings[]){
+
+    public Adapter(Context a_c, int a_images[], String a_beerNames[], float a_degrees[], float a_ratings[], int idCatalogs[]){
         c = a_c;
         images = a_images;
         degrees = a_degrees;
         ratings = a_ratings;
         beerNames = a_beerNames;
+        this.idCatalogs = idCatalogs;
     }
 
     @NonNull
@@ -44,15 +43,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(c);
         View view = inflater.inflate(R.layout.beer_layout_in_catalogue, parent, false);
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { OpenBeerDetails(); }
-        });
-
         return new ViewHolder(view);
     }
 
-    public interface Listener{ void onClickDeleteButton(int position); }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -62,18 +55,25 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.tv_degree.setText(String.valueOf(degrees[position]) + "°");
         holder.rating.setRating(ratings[position]);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenBeerDetails(position);
+            }
+        });
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { DeleteBeer(); }
+            public void onClick(View v) { DeleteBeer(position); }
         });
 
         modifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { ModifyBeer(); }
+            public void onClick(View v) { ModifyBeer(position); }
         });
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView tv_beerName, tv_degree;
         RatingBar rating;
@@ -92,17 +92,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public int getItemCount() { return beerNames.length; }
 
-    void OpenBeerDetails(){
+    void OpenBeerDetails(int position){
         Intent beerDetailsActivity = new Intent(c, BeerDetails.class);
+
+        Log.i("test", "item " + String.valueOf(position));
+
+        beerDetailsActivity.putExtra("idCatalog", idCatalogs[position]);
         c.startActivity(beerDetailsActivity);
     }
 
-    void ModifyBeer(){
-        Intent modifyActivity = new Intent(c, AddGeneralBeerData.class);
+    void ModifyBeer(int position){
+        Intent modifyActivity = new Intent(c, AddPersonalBeerData.class);
+        modifyActivity.putExtra("idCatalog", idCatalogs[position]);
         c.startActivity(modifyActivity);
     }
 
-    void DeleteBeer(){
+    void DeleteBeer(int position){
         //Supprime bière de la bdd personnelle seulement
         Toast.makeText(c, "Beer deleted", Toast.LENGTH_SHORT).show();
     }

@@ -56,13 +56,13 @@ public class AccountCreation extends AppCompatActivity {
             public void onClick(View v) {
                 if(!AccountDataIsValid())
                     DisplayErrorMessage("Datas are invalid");
-                else if(AccountAlreadyExists())
-                    DisplayErrorMessage("This account already exists");
                 else if(AddAccountToDataBase(
                         login_input.getText().toString(),
                         password_input.getText().toString(),
                         email_input.getText().toString()))
                     DisplayErrorMessage("Account created");
+                else
+                    DisplayErrorMessage("This account already exists");
             }
         });
 
@@ -117,7 +117,7 @@ public class AccountCreation extends AppCompatActivity {
     boolean AddAccountToDataBase(String a_username, String a_password, String a_mail){
         //Ajout du compte dans la BDD
 
-        new Registration().execute(a_username, a_password, a_mail);
+        Registration registration = (Registration) new Registration().execute(a_username, a_password, a_mail);
 
         taskIsEnded = false;
         while(! taskIsEnded) {
@@ -128,7 +128,7 @@ public class AccountCreation extends AppCompatActivity {
             }
         }
 
-        return b_accountWellCreated;
+        return registration.result;
     }
 
 
@@ -141,10 +141,6 @@ public class AccountCreation extends AppCompatActivity {
 
         boolean result = false;
 
-        @Override
-        protected void onPostExecute(String s) {
-            b_accountWellCreated = result;
-        }
 
         @Override
         protected String doInBackground(String... params) {

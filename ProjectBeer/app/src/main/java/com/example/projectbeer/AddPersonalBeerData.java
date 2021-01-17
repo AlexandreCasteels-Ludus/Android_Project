@@ -82,7 +82,7 @@ public class AddPersonalBeerData extends AppCompatActivity {
         getSupportActionBar().hide();
 
         Log.i("alldata", "ok - 1");
-
+        boolean modify = getIntent().getBooleanExtra("modify", false);
 
         datePicker = (DatePicker) findViewById(R.id.date_input);
         datePicker.setMaxDate(new Date().getTime());
@@ -324,7 +324,7 @@ public class AddPersonalBeerData extends AppCompatActivity {
 
             try {
                 httpTransportSE.call(SOAP_ACTION + METHOD_NAME, envelope);
-                //result = (boolean) envelope.getResponse();
+                result = (boolean) envelope.getResponse();
                 Log.i("wxcv", String.valueOf(envelope.getResponse()));
 
             } catch (Exception e) {
