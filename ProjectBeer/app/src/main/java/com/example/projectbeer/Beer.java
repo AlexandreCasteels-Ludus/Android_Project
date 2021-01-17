@@ -32,9 +32,9 @@ public class Beer implements Serializable {
         String comment;
         float rating;
         String image;
-        Date date;
+        java.sql.Date date;
 
-        Beer(int a_container, float a_volume, LatLng a_consumption_place, String a_comment, float a_rating, String a_image, Date a_date){
+        Beer(int a_container, float a_volume, LatLng a_consumption_place, String a_comment, float a_rating, String a_image, java.sql.Date a_date){
             container = a_container;
             volume = a_volume;
             consumption_place = a_consumption_place;

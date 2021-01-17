@@ -87,6 +87,8 @@ public class AddPersonalBeerData extends AppCompatActivity {
         idCatalog = getIntent().getIntExtra("idCatalog", -1);
         idUser = getIntent().getIntExtra("idUser", -1);
 
+        Log.i("userid", String.valueOf(idUser));
+
         datePicker = (DatePicker) findViewById(R.id.date_input);
         datePicker.setMaxDate(new Date().getTime());
         commentary = (EditText) findViewById(R.id.commentary_input);
@@ -109,6 +111,7 @@ public class AddPersonalBeerData extends AppCompatActivity {
                 dataIsValid = true;
 
                 if (container_volume.getText().toString().matches("")) volume = 0;
+                else volume = Float.parseFloat(container_volume.getText().toString());
 
                 RecordData();
 
@@ -146,6 +149,7 @@ public class AddPersonalBeerData extends AppCompatActivity {
             beer = (Beer) getIntent().getSerializableExtra("Beer");
         }
         else{
+            Log.i("modif", "modif");
             //Récupération des infos de la DB
 
             beer = new Beer();
@@ -181,8 +185,9 @@ public class AddPersonalBeerData extends AppCompatActivity {
             commentary.setText((String)getDetails.result.getProperty(1));
             ratingBar.setRating(Float.parseFloat((String)getDetails.result.getProperty(2)));
             spinner.setSelection(Integer.parseInt((String) getDetails.result.getProperty(9)));
+            spinner.setEnabled(false);
             container_volume.setText((String)getDetails.result.getProperty(10));
-
+            container_volume.setEnabled(false);
         }
     }
 
@@ -196,7 +201,7 @@ public class AddPersonalBeerData extends AppCompatActivity {
         LatLng consumptionPlace = new LatLng(0,0);
         String comment = commentary.getText().toString();
         float rating = ratingBar.getRating();
-        Date date = new Date(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+        java.sql.Date date = new java.sql.Date(datePicker.getYear() - 1900, datePicker.getMonth(), datePicker.getDayOfMonth());
         Image image;
 
         Beer newBeerData = new Beer(container, volume, consumptionPlace, comment, rating, null , date);
@@ -212,6 +217,7 @@ public class AddPersonalBeerData extends AppCompatActivity {
         Log.i("alldata", beer.name + " " + beer.type + " " + beer.brewery + " " + String.valueOf(beer.percent) + " " + beer.comment+ " " + String.valueOf(beer.consumption_place) + " " + beer.container + " " + String.valueOf(beer.rating) + " " + String.valueOf(beer.date));
 
         if(idCatalog == -1){
+            Log.i("mode123456", "creation");
             AddBeer addbeer = (AddBeer) new AddBeer().execute(
                     beer.name,
                     beer.type,
@@ -226,6 +232,8 @@ public class AddPersonalBeerData extends AppCompatActivity {
                     String.valueOf(beer.date),
                     String.valueOf(idUser)
             );
+            Log.i("mode123456", "après requete");
+            Log.i("mode123456", beer.name + " " + beer.rating);
 
             while(! addbeer.taskIsDone){
                 try {
@@ -236,6 +244,7 @@ public class AddPersonalBeerData extends AppCompatActivity {
             }
         }
         else{
+            Log.i("mode123456", "modification");
             ModifyCatalog modifyCatalog = (ModifyCatalog) new ModifyCatalog().execute(
                     String.valueOf(beer.consumption_place),
                     beer.comment,
@@ -252,16 +261,12 @@ public class AddPersonalBeerData extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
+            Log.i("modif", container_volume.getText().toString());
+            Log.i("modif", String.valueOf(spinner.getSelectedItemId()));
+            Log.i("modif", "modif");
         }
 
-
-/*
-        if(existsInGeneralDB){
-
-        } else{
-
-        }
-*/
     }
 
 

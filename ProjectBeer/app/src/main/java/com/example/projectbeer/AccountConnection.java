@@ -82,7 +82,7 @@ public class AccountConnection extends AppCompatActivity {
             }
         }
 
-        return true; //signIn.result;
+        return signIn.result;
     }
 
     class GetUserId extends AsyncTask<String, Void, String> {

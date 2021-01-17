@@ -66,10 +66,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             }
         });
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+/*        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { DeleteBeer(position); }
-        });
+        });*/
 
         modifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +88,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             tv_beerName = itemView.findViewById(R.id.beerName_rv);
             tv_degree = itemView.findViewById(R.id.degree_rv);
             rating = itemView.findViewById(R.id.rating_rv);
-            deleteButton = itemView.findViewById(R.id.deleteButton);
+//            deleteButton = itemView.findViewById(R.id.deleteButton);
             modifyButton = itemView.findViewById(R.id.modifyButton);
         }
     }

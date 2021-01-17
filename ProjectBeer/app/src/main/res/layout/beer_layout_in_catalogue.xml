@@ -75,27 +75,27 @@
                 android:numStars="5"
                 android:rating="2.5"
                 android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
                 android:progressTint="@color/light_orange"
                 />
 
             <ImageButton
                 android:id="@+id/modifyButton"
-                android:layout_toLeftOf="@id/deleteButton"
-                android:layout_centerVertical="true"
-                android:layout_margin="5dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 app:srcCompat="@android:drawable/ic_menu_edit" />
 
 
-            <ImageButton
-                android:id="@+id/deleteButton"
-                android:layout_height="30dp"
-                android:layout_width="30dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:backgroundTint="@color/dark_red"
-                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+            <!--            <ImageButton
+                            android:id="@+id/deleteButton"
+                            android:layout_height="30dp"
+                            android:layout_width="30dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:backgroundTint="@color/dark_red"
+                            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />-->
         </RelativeLayout>
 
     </RelativeLayout>

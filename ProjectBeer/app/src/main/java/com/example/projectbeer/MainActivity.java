@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         idUser = getIntent().getIntExtra("idUser", -1);
 
+        Log.i("uuuser", String.valueOf(idUser));
+        Log.i("uuuser", "String.valueOf(idUser)");
         if(idUser != -1){
 
             GetAllCatalogOfUser getAllCatalogOfUser = (GetAllCatalogOfUser) new GetAllCatalogOfUser().execute(String.valueOf(idUser));

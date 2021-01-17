@@ -29,7 +29,7 @@ public class ModifyCatalog extends AsyncTask<String, Void, String> {
     String PARAMS_3_score = "score";
     String PARAMS_4_photo = "photo";
     String PARAMS_5_date = "date";
-    String PARAMS_6_idCatalog = "idCatalog";
+    String PARAMS_6_id = "idCatalog";
 
     boolean result = false;
 
@@ -37,6 +37,7 @@ public class ModifyCatalog extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
 
         SoapObject soapObject = new SoapObject(NAMESPACE, METHOD_NAME);
+        Log.i("wxcv", "pl");
 
         PropertyInfo propertyInfo1 = new PropertyInfo();
         propertyInfo1.setName(PARAMS_1_localisation);
@@ -68,11 +69,13 @@ public class ModifyCatalog extends AsyncTask<String, Void, String> {
         propertyInfo5.setType(int.class);
         soapObject.addProperty(propertyInfo5);
 
+
         PropertyInfo propertyInfo6 = new PropertyInfo();
-        propertyInfo6.setName(PARAMS_6_idCatalog);
+        propertyInfo6.setName(PARAMS_6_id);
         propertyInfo6.setValue(params[5]);
-        propertyInfo6.setType(float.class);
+        propertyInfo6.setType(int.class);
         soapObject.addProperty(propertyInfo6);
+
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(soapObject);

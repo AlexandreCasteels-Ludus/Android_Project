@@ -18,6 +18,9 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.util.Locale;
 
 
 public class AccountCreation extends AppCompatActivity {
@@ -43,6 +46,11 @@ public class AccountCreation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_creation);
         getSupportActionBar().hide();
+
+        Locale locale = new Locale("fr", "FR");
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
+        String date = dateFormat.format(new Date(2021,01,17));
+        Log.i("dateeee", date);
 
         connectionPageButton = (Button) findViewById(R.id.accountConnection_link);
         creationButton = (Button) findViewById(R.id.create_button);
