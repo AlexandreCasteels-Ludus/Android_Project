@@ -82,7 +82,7 @@ public class AddPersonalBeerData extends AppCompatActivity {
         getSupportActionBar().hide();
 
         Log.i("alldata", "ok - 1");
-        boolean modify = getIntent().getBooleanExtra("modify", false);
+        int idCatalog = getIntent().getIntExtra("idCatalog", -1);
 
         datePicker = (DatePicker) findViewById(R.id.date_input);
         datePicker.setMaxDate(new Date().getTime());
@@ -132,8 +132,49 @@ public class AddPersonalBeerData extends AppCompatActivity {
             }
         });
 
-        //Récupération des infos de l'activity précédente
-        beer = (Beer) getIntent().getSerializableExtra("Beer");
+
+        //Vérification si on veut ajouter une nouvelle biere ou modifier ses informations dans le catalogue
+        if(idCatalog == -1){
+            //Récupération des infos de l'activity précédente
+            beer = (Beer) getIntent().getSerializableExtra("Beer");
+        }
+        else{
+            //Récupération des infos de la DB
+
+            GetDetails getDetails = (GetDetails) new GetDetails().execute(String.valueOf(idCatalog));
+
+            while (! getDetails.taskIsDone){
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            /*
+                            PROPERTIES result:
+                            0   localisation
+                            1   comment
+                            2   score
+                            3   photo
+                            4   date
+                            5   name
+                            6   type
+                            7   brewery
+                            8   percentAlcohol
+                            9   container
+                            10  volume
+                             */
+
+
+            //imageView.setImageBitmap((Bitmap) getDetails.result.getProperty(3));
+            String[] dateConcatenated = ((String) getDetails.result.getProperty(4)).split("-");
+            datePicker.updateDate(Integer.parseInt(dateConcatenated[0]), Integer.parseInt(dateConcatenated[1]), Integer.parseInt(dateConcatenated[2]));
+            commentary.setText((String)getDetails.result.getProperty(1));
+            ratingBar.setRating(Float.parseFloat((String)getDetails.result.getProperty(2)));
+            spinner.setSelection(Integer.parseInt((String) getDetails.result.getProperty(9)));
+            container_volume.setText((String)getDetails.result.getProperty(10));
+
+        }
     }
 
     void RecordData(){

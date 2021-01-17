@@ -49,7 +49,7 @@ public class AccountConnection extends AppCompatActivity {
                     getUserId.taskIsEnded = false;
                     while(! getUserId.taskIsEnded) {
                         try {
-                            Thread.sleep(200);
+                            Thread.sleep(50);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -75,7 +75,7 @@ public class AccountConnection extends AppCompatActivity {
         signIn.taskIsEnded = false;
         while(! signIn.taskIsEnded) {
             try {
-                Thread.sleep(200);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
             while(! getAllCatalogOfUser.taskIsEnded) {
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent addBeerActivity = new Intent(getApplicationContext(), AddGeneralBeerData.class);
+                    addBeerActivity.putExtra("idCatalog", -1); // specify a new Catalog line
                     startActivity(addBeerActivity);
                 }
             });

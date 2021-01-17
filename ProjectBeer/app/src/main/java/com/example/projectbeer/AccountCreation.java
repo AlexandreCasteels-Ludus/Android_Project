@@ -105,7 +105,7 @@ public class AccountCreation extends AppCompatActivity {
         signIn.taskIsEnded = false;
         while(! signIn.taskIsEnded) {
             try {
-                Thread.sleep(200);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -122,7 +122,7 @@ public class AccountCreation extends AppCompatActivity {
         taskIsEnded = false;
         while(! taskIsEnded) {
             try {
-                Thread.sleep(200);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
